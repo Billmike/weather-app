@@ -1,7 +1,16 @@
 const request = require('request');
 const dotenv = require('dotenv');
+const yargs = require('yargs');
 
 dotenv.config();
+
+const argv = yargs.options({
+  address: {
+    alias: a,
+    demand: true,
+    describe: 'Address to fetch weather for'
+  }
+})
 
 request(
   {
