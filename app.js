@@ -24,8 +24,14 @@ request(
     json: true
   },
   (err, response, body) => {
-    console.log(`Address: ${body.results[0].formatted_address}`);
-    console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
-    console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
+    if (err) {
+      console.log('Unable to connect to google servers.')
+    } else if (body.status === 'ZERO_RESULTS') {
+      console.log(`Cannot find ${argv.address} in our directory of addresses.`)
+    } else if (body.status === 'OK') {
+      console.log(`Address: ${body.results[0].formatted_address}`);
+      console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
+      console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
+    }
   }
 );
