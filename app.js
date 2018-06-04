@@ -4,19 +4,25 @@ const yargs = require('yargs');
 
 dotenv.config();
 
-const argv = yargs.options({
+const { argv } = yargs.options({
   address: {
-    alias: a,
+    alias: 'a',
     demand: true,
     describe: 'Address to fetch weather for',
-    string: true
+    string: true,
   }
 })
+  .help()
+  .alias('help', 'h');
+
+console.log(argv)
+
+const encodedAddress = encodeURIComponent(argv.address);
 
 request(
   {
     url:
-      `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.API_KEY}&address=1301%20lombard%20street%20philadelphia`,
+      `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.API_KEY}&address=${encodedAddress}`,
     json: true
   },
   (err, response, body) => {
