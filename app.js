@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const yargs = require('yargs');
 
 const encodeAddress = require('./geocode/index').geoCodeAddress;
+const weather = require('./weather/weather').getWeather;
 
 dotenv.config();
 
@@ -17,4 +18,18 @@ const { argv } = yargs.options({
   .help()
   .alias('help', 'h');
 
-encodeAddress(argv.address)
+encodeAddress(argv.address, (error, result) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(result.address)
+
+    weather(result.latitude, result.longitude, (error, response) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(response);
+      }
+    });
+  }
+});
